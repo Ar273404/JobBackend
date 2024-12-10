@@ -1,9 +1,8 @@
-import { cathAsyncError } from "./catchAsyncError.js";
 import ErrorHandler from "./error.js";
 import jwt from "jsonwebtoken";
 import User from "../modals/userSchema.js";
 
-export const isAuthorized = cathAsyncError(async (req, res, next) => {
+export const isAuthorized = async (req, res, next) => {
   const { token } = req.cookies;
 
   // Check if token is present
@@ -22,4 +21,4 @@ export const isAuthorized = cathAsyncError(async (req, res, next) => {
 
     // Proceed to the next middleware
     next();
-});
+};

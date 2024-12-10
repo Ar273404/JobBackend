@@ -1,9 +1,9 @@
-import { cathAsyncError } from "../middlewares/catchAsyncError.js"
+
 import ErrorHandler from "../middlewares/error.js"
 import User from "../modals/userSchema.js";
 import { sendToken } from "../utils/jwtToken.js";
 
-export const register=cathAsyncError(async(req,res,next)=>{
+export const register= async(req,res,next)=>{
  const {name,email,phone,role,password} = req.body;
  console.log(req.body);
  if(!name || !email || !phone || !role || !password)
@@ -24,9 +24,9 @@ export const register=cathAsyncError(async(req,res,next)=>{
     password,
   });
    sendToken(user,200,res,"User Register Successfully!");
-});
+};
 
-export const login = cathAsyncError(async(req,res,next)=>{
+export const login = async(req,res,next)=>{
    const {email,password,role} = req.body;
    console.log(req.body)
    if(!email || !password || !role)
@@ -48,9 +48,9 @@ export const login = cathAsyncError(async(req,res,next)=>{
      return next(new ErrorHandler("User with this role not found", 400));
    }
    sendToken(user,200,res,"User logged Successfully!");
-})
+}
 
-export const logout = cathAsyncError(async(req,res,next)=>{
+export const logout = async(req,res,next)=>{
     res
       .status(201)
       .cookie("token", "", {
@@ -63,12 +63,12 @@ export const logout = cathAsyncError(async(req,res,next)=>{
         succuss: true,
         message: "User logged out successfully!",
       });
-})
+}
 
-export const getUser = cathAsyncError((req,res,next)=>{
+export const getUser = (req,res,next)=>{
   const user = req.user;
   res.status(200).json({
     success:true,
     user,
   });
-});
+};

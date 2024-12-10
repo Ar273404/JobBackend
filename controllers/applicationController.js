@@ -1,10 +1,10 @@
-import { cathAsyncError } from "../middlewares/catchAsyncError.js";
+
 import ErrorHandler from '../middlewares/error.js';
 import { Application } from '../modals/applicationSchema.js';
 import cloudinary from 'cloudinary';
 import Job from '../modals/jobSchema.js'
 
-export const employerGetAllapplications = cathAsyncError(async(req,res,next)=>{
+export const employerGetAllapplications = async(req,res,next)=>{
      const { role } = req.user;
      if (role === "job Seeker") {
        return next(
@@ -19,9 +19,9 @@ export const employerGetAllapplications = cathAsyncError(async(req,res,next)=>{
         success:true,
         applications
      })
-});
+};
 
-export const jobseekerGetAllapplications = cathAsyncError(async (req, res, next) => {
+export const jobseekerGetAllapplications = async (req, res, next) => {
     const { role } = req.user;
     if (role === "Employer") {
       return next(new ErrorHandler("🙅🙅Employer is not allowed to acces this resources!", 400) );
@@ -33,9 +33,9 @@ export const jobseekerGetAllapplications = cathAsyncError(async (req, res, next)
       applications,
     });
   }
-);
+;
 
-export const jobseekerDeleteapplications = cathAsyncError(async (req, res, next) => {
+export const jobseekerDeleteapplications =async (req, res, next) => {
     const { role } = req.user;
     if (role === "Employer") {
       return next( new ErrorHandler( "🙅🙅Employer is not allowed to acces this resources!",   400  )
@@ -52,15 +52,15 @@ export const jobseekerDeleteapplications = cathAsyncError(async (req, res, next)
       message:"Application Deleted Successfully!",
     });
   }
-);
+;
 
-export const postapplication = cathAsyncError(
+export const postapplication = 
   async (req, res, next) => {
     const { role } = req.user;
     if (role === "Employer") {
       return next( new ErrorHandler("🙅🙅Employer is not allowed to acces this resources!", 400));
     }
-
+     console.log(req.files);
     if (!req.files || Object.keys(req.files).length === 0) {
       return next(new ErrorHandler("🙄🙄 Resume file Required!", 400));
     }
@@ -133,4 +133,4 @@ export const postapplication = cathAsyncError(
          application, 
        });
   }
-);
+;

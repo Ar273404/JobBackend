@@ -1,16 +1,15 @@
-import { cathAsyncError } from "../middlewares/catchAsyncError.js";
 import ErrorHandler from "../middlewares/error.js";
 import Job from "../modals/jobSchema.js";
 
-export const getAlljobs = cathAsyncError(async(req,res,next)=>{
+export const getAlljobs = async(req,res,next)=>{
     const jobs = await Job.find({expired:false});
     res.status(200).json({
         success:true,
         jobs,
     })
-})
+}
 
-export const postJob = cathAsyncError(async(req,res,next)=>{
+export const postJob = async(req,res,next)=>{
     const {role} = req.user;
     if(role === "job Seeker")
     {
@@ -52,9 +51,9 @@ export const postJob = cathAsyncError(async(req,res,next)=>{
         message:"job posted successfully",
         job
     })
-});
+};
 
-export const getmyJobs = cathAsyncError(async(req,res,next)=>{
+export const getmyJobs = async(req,res,next)=>{
     const {role} = req.user; 
     if (role === "job Seeker") {
         return next( new ErrorHandler("🙅🙅Job seeker is not allowed to access this resources", 400));
@@ -64,8 +63,8 @@ export const getmyJobs = cathAsyncError(async(req,res,next)=>{
         success:true,
         myjobs,
       })
-})
-export const  updatejob = cathAsyncError(async(req,res,next)=>{
+}
+export const  updatejob = async(req,res,next)=>{
     const {role} = req.user;
     if(role === 'job Seeker')
     {
@@ -89,8 +88,8 @@ export const  updatejob = cathAsyncError(async(req,res,next)=>{
       message: "job updated successfully",
       job,
     });
-})
-export const deletejob = cathAsyncError(async(req,res,next)=>{
+}
+export const deletejob = async(req,res,next)=>{
     const {role} = req.body;
     if(role === "job Seeker")
     {
@@ -107,8 +106,8 @@ export const deletejob = cathAsyncError(async(req,res,next)=>{
         success:true,
         message:"Job deleted Successfully"
        })
-})
-export const getSingleJob = cathAsyncError(async(req,res,next)=>{
+}
+export const getSingleJob = async(req,res,next)=>{
     const {id} = req.params;
     try{
         const job = await Job.findById(id);
@@ -123,4 +122,4 @@ export const getSingleJob = cathAsyncError(async(req,res,next)=>{
     }catch (error){
         return next(new ErrorHandler("🙅🙅 Invalid id or cost error", 404));
     }
-})
+}

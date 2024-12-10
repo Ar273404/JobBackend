@@ -18,7 +18,7 @@ dotenv.config({path:'./config/config.env'});
 
 // Define a route for '/'
 app.get('/', (req, res) => {
-  res.send('Hello, World!'); // Respond with a simple message
+  res.send('Server is Running!'); // Respond with a simple message
 });
 
 
