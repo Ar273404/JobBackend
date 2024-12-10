@@ -22,11 +22,20 @@ app.get('/', (req, res) => {
 });
 
 
+// app.use(
+//   cors({
+//     origin: [process.env.FRONTED_URL, "http://localhost:3000"],
+//     methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"],
+//     credentials: true,
+//   })
+// );
 app.use(
   cors({
-    origin: [process.env.FRONTED_URL, "http://localhost:3000"],
+    origin: (origin, callback) => {
+      callback(null, true); // Allow all origins dynamically
+    },
     methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"],
-    credentials: true,
+    credentials: true, // Allow credentials
   })
 );
 app.use(cookieParser());
