@@ -1,60 +1,66 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
-import fileUpload from 'express-fileupload';
-import userRouter from './routes/userRouter.js'
-import jobRouter from './routes/jobRouter.js'
-import applicationRouter from './routes/applicationRouter.js'
-import { db } from './database/db.js';
-import { errorMiddleware } from './middlewares/error.js';
-
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import fileUpload from "express-fileupload";
+import userRouter from "./routes/userRouter.js";
+import jobRouter from "./routes/jobRouter.js";
+import applicationRouter from "./routes/applicationRouter.js";
+import { db } from "./database/db.js";
+import { errorMiddleware } from "./middlewares/error.js";
 
 const app = express();
 
-dotenv.config({path:'./config/config.env'});
-
-
+dotenv.config({ path: "./config/config.env" });
 
 // Define a route for '/'
-app.get('/', (req, res) => {
-  res.send('Server is Running!'); // Respond with a simple message
+app.get("/", (req, res) => {
+  res.send("Server is Running!"); // Respond with a simple message
 });
 
-
-// app.use(
-//   cors({
-//     origin: [process.env.FRONTED_URL, "http://localhost:3000"],
-//     methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"],
-//     credentials: true,
-//   })
-// );
+// CORS Configuration
 app.use(
   cors({
     origin: (origin, callback) => {
-      callback(null, true); // Allow all origins dynamically
+      const allowedOrigins = [
+        process.env.FRONTEND_URL, // Frontend URL from environment
+        "http://localhost:3000", // Localhost during development
+      ];
+
+      // Allow requests with no origin (like mobile apps or Postman)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
     },
     methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"],
-    credentials: true, // Allow credentials
+    credentials: true, // Allow credentials (cookies)
   })
 );
+
+// Middleware Setup
 app.use(cookieParser());
 app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 
-app.use(fileUpload({
-    useTempFiles:true,
-    tempFileDir:"/temp",
-}));
+// File Upload Middleware
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/temp", // Temporary file directory
+  })
+);
 
-app.use("/user",userRouter);
-app.use("/application",applicationRouter);
-app.use("/job",jobRouter);
+// Routers
+app.use("/user", userRouter);
+app.use("/application", applicationRouter);
+app.use("/job", jobRouter);
 
-//database
+// Database Connection
 db();
 
-//error middleware in last
+// Error Middleware (always at the end)
 app.use(errorMiddleware);
 
 export default app;
