@@ -24,7 +24,6 @@ app.use(
     origin: (origin, callback) => {
       const allowedOrigins = [
         process.env.FRONTEND_URL, // Frontend URL from environment
-        "http://localhost:3000", // Localhost during development
       ];
 
       // Allow requests with no origin (like mobile apps or Postman)
