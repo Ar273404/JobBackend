@@ -24,34 +24,24 @@ app.get('/', (req, res) => {
 
 // app.use(
 //   cors({
-//     origin: [process.env.FRONTED_URL, "http://localhost:3000"],
+//     origin: [process.env.FRONTED_URL],
 //     methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"],
 //     credentials: true,
 //   })
 // );
 app.use((req, res, next) => {
-  const allowedOrigins = ["https://jobfrontend-qng1.onrender.com"];
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "GET, POST, DELETE, PUT, OPTIONS"
-    );
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Content-Type, Authorization"
-    );
+  const allowedOrigin = process.env.FRONTEND_URL; // Use FRONTEND_URL from the environment
+  if (allowedOrigin) {
+    res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
+  } else {
+    console.warn("FRONTEND_URL is not set in the environment variables!");
   }
-
-  if (req.method === "OPTIONS") {
-    res.status(204).end(); // Handle preflight request
-    return;
-  }
-
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   next();
 });
+
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
