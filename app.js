@@ -22,14 +22,21 @@ app.get('/', (req, res) => {
 });
 
 
+// app.use(
+//   cors({
+//     origin: [process.env.FRONTED_URL, "http://localhost:3000"],
+//     methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"],
+//     credentials: true,
+//   })
+// );
 app.use(
   cors({
-    origin: [process.env.FRONTED_URL],
+    origin: "*", // Allow all origins
     methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"],
-    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
+    credentials: true, // Allow credentials
   })
 );
-
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
