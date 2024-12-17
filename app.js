@@ -22,24 +22,24 @@ app.get('/', (req, res) => {
 });
 
 
-// app.use(
-//   cors({
-//     origin: [process.env.FRONTED_URL],
-//     methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"],
-//     credentials: true,
-//   })
-// );
-app.use((req, res, next) => {
-  const allowedOrigin = process.env.FRONTEND_URL; // Use FRONTEND_URL from the environment
-  if (allowedOrigin) {
-    res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
-  } else {
-    console.warn("FRONTEND_URL is not set in the environment variables!");
-  }
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
-});
+app.use(
+  cors({
+    origin: [process.env.FRONTED_URL],
+    methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"],
+    credentials: true,
+  })
+);
+// app.use((req, res, next) => {
+//   const allowedOrigin = process.env.FRONTEND_URL; // Use FRONTEND_URL from the environment
+//   if (allowedOrigin) {
+//     res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
+//   } else {
+//     console.warn("FRONTEND_URL is not set in the environment variables!");
+//   }
+//   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+//   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//   next();
+// });
 
 
 app.use(cookieParser());
