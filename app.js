@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 
 app.use(
   cors({
-    origin: [process.env.FRONTED_URL],
+    origin: "*",
     methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"],
     credentials: true,
   })
